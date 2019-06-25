@@ -1,4 +1,9 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+
+html {
+  font-size: 14px;
+}
 
 body {
   margin: 0;

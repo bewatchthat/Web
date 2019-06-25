@@ -1,6 +1,7 @@
 import * as React from 'react';
-import ResourceModel from '../models/resource.model';
+import ResourceModel from '../../models/resource.model';
 import Resource from './Resource';
+import styles from './ResourceList.module.css';
 
 interface ResourceListProps {
   resources: ResourceModel[];
@@ -8,7 +9,7 @@ interface ResourceListProps {
 
 export default function ResourceList(props: ResourceListProps) {
   return (
-    <ul>
+    <ul className={ styles.list }>
       { props.resources.map(x => <Resource key={ x.url } resource={ x }/>) }
     </ul>
   );

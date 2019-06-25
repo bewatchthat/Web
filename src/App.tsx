@@ -1,9 +1,13 @@
 import React from 'react';
+import styles from './App.module.css';
+import HomeView from './components/views/HomeView';
 
-const App: React.FC = () => {
+function App() {
   return (
-    <div/>
+    <main className={ styles.app }>
+      <HomeView/>
+    </main>
   );
-};
+}
 
-export default App;
+export default React.memo(App);
