@@ -1,3 +1,4 @@
+import axios, { AxiosError } from 'axios';
 import * as React from 'react';
 import ResourceModel from '../../models/resource.model';
 import ErrorAlert from '../presenters/ErrorAlert';
@@ -17,16 +18,10 @@ function useResources(): ResourceHookData {
   React.useEffect(() => {
     setIsLoading(true);
 
-    fetch('/api/resources')
-      .then(x => {
-        if (x.ok) {
-          return x.json();
-        } else {
-          return Promise.reject('Error fetching resources!');
-        }
-      })
-      .then(x => setResources(x))
-      .catch(x => setError(x.message || x))
+    axios
+      .get<ResourceModel[]>('/api/resources')
+      .then(x => setResources(x.data))
+      .catch((x: AxiosError) => setError(x.message))
       .finally(() => setIsLoading(false));
   }, []);
 
