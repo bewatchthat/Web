@@ -7,13 +7,14 @@ interface ResourceWorthButtonProps {
   icon: string;
   count: number;
   active: boolean;
+  onClick: () => void;
 }
 
-function ResourceWorthButton({ icon, count, active, className }: WithClassName<ResourceWorthButtonProps>) {
+function ResourceWorthButton({ icon, count, active, className, onClick }: WithClassName<ResourceWorthButtonProps>) {
   const classNames = classnames(styles.root, { [styles.active]: active }, className);
 
   return (
-    <span className={ classNames }>
+    <span className={ classNames } onClick={ onClick }>
       <i className="material-icons">{ icon }</i>
       <span className={ styles.label }>{ count }</span>
     </span>

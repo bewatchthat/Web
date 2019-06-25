@@ -23,8 +23,8 @@ export default function Resource(props: ResourceProps) {
       </Row>
       <Row className="justify-content-end">
         <Col className="d-flex" xs="auto">
-          <ResourceWorthButton active={ false } count={ worthCount } icon="thumb_up"/>
-          <ResourceWorthButton className={ styles.notWorth } active={ false } count={ notWorthCount } icon="thumb_down"/>
+          <ResourceWorthButton active={ false } count={ worthCount } icon="thumb_up" onClick={ console.log }/>
+          <ResourceWorthButton className={ styles.notWorth } active={ false } count={ notWorthCount } icon="thumb_down" onClick={ console.log }/>
         </Col>
       </Row>
     </li>
