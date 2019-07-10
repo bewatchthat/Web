@@ -7,10 +7,12 @@ import ResourceWorthButton from './ResourceWorthButton';
 
 interface ResourceProps {
   resource: ResourceModel;
+  onWorthClick: () => void;
+  onNotWorthClick: () => void;
 }
 
-export default function Resource(props: ResourceProps) {
-  const { url, title, worthCount, notWorthCount } = props.resource;
+export default function Resource({ resource, onWorthClick, onNotWorthClick }: ResourceProps) {
+  const { url, title, worthCount, notWorthCount } = resource;
 
   return (
     <li>
@@ -23,8 +25,8 @@ export default function Resource(props: ResourceProps) {
       </Row>
       <Row className="justify-content-end">
         <Col className="d-flex" xs="auto">
-          <ResourceWorthButton active={ false } count={ worthCount } icon="thumb_up" onClick={ console.log }/>
-          <ResourceWorthButton className={ styles.notWorth } active={ false } count={ notWorthCount } icon="thumb_down" onClick={ console.log }/>
+          <ResourceWorthButton active={ false } count={ worthCount } icon="thumb_up" onClick={ onWorthClick }/>
+          <ResourceWorthButton className={ styles.notWorth } active={ false } count={ notWorthCount } icon="thumb_down" onClick={ onNotWorthClick }/>
         </Col>
       </Row>
     </li>

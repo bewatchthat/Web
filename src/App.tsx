@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './App.module.css';
-import HomeView from './components/views/HomeView';
+import HomeView from './views/HomeView';
 
 function App() {
   return (

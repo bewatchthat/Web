@@ -1,8 +1,8 @@
 import axios, { AxiosError } from 'axios';
 import * as React from 'react';
-import ResourceModel from '../../models/resource.model';
-import ErrorAlert from '../presenters/ErrorAlert';
-import ResourceList from '../presenters/ResourceList';
+import ResourceModel, { ResourceEndorsementType } from '../../models/resource.model';
+import ErrorAlert from '../ErrorAlert';
+import ResourceList from './ResourceList';
 
 interface ResourceHookData {
   resources: ResourceModel[];
@@ -34,7 +34,26 @@ function useMockResources(): ResourceHookData {
       title: 'Why Kubernetes is the silver bullet we\'ve all been waiting for',
       url: 'http://www.example.com',
       worthCount: 2,
-      notWorthCount: 1
+      notWorthCount: 1,
+      endorsements: [{
+        type: ResourceEndorsementType.Worth,
+        user: {
+          id: 'abc',
+          name: 'Greg'
+        }
+      }, {
+        type: ResourceEndorsementType.Worth,
+        user: {
+          id: 'def',
+          name: 'Not Greg'
+        }
+      }, {
+        type: ResourceEndorsementType.NotWorth,
+        user: {
+          id: 'ghi',
+          name: 'Negative Greg'
+        }
+      }]
     }],
     isLoading: false
   };
@@ -51,7 +70,15 @@ function ResourceListContainer() {
     return <p>Loading...</p>;
   }
 
-  return <ResourceList resources={ resources }/>;
+  const onResourceWorthClick = () => {
+
+  };
+
+  const onResourceNotWorthClick = () => {
+
+  };
+
+  return <ResourceList resources={ resources } onResourceWorthClick={ onResourceWorthClick } onResourceNotWorthClick={ onResourceNotWorthClick }/>;
 }
 
 export default React.memo(ResourceListContainer);
