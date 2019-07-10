@@ -12,7 +12,11 @@ interface ResourceProps {
 }
 
 export default function Resource({ resource, onWorthClick, onNotWorthClick }: ResourceProps) {
-  const { url, title, worthCount, notWorthCount } = resource;
+  const { url, title } = resource;
+
+  // placeholder
+  const worthCount = 2;
+  const notWorthCount = 1;
 
   return (
     <li>

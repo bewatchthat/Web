@@ -3,10 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as React from 'react';
 import Button from 'react-bootstrap/Button';
 
-interface AddResourceButtonProps {
-  onClick: () => void;
+function AddResourceButton() {
+  return <Button><FontAwesomeIcon icon={ faPlus }/> Add Resource</Button>;
 }
 
-export default function AddResourceButton({ onClick }: AddResourceButtonProps) {
-  return <Button onClick={ onClick }><FontAwesomeIcon icon={ faPlus }/> Add Resource</Button>;
-}
+export default React.memo(AddResourceButton);

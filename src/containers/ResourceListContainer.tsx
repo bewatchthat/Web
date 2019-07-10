@@ -1,8 +1,8 @@
 import axios, { AxiosError } from 'axios';
 import * as React from 'react';
-import ResourceModel, { ResourceEndorsementType } from '../../models/resource.model';
-import ErrorAlert from '../ErrorAlert';
-import ResourceList from './ResourceList';
+import ErrorAlert from '../components/ErrorAlert';
+import ResourceList from '../components/resource-list/ResourceList';
+import ResourceModel from '../models/resource.model';
 
 interface ResourceHookData {
   resources: ResourceModel[];
@@ -31,29 +31,9 @@ function useResources(): ResourceHookData {
 function useMockResources(): ResourceHookData {
   return {
     resources: [{
+      id: 'first-id',
       title: 'Why Kubernetes is the silver bullet we\'ve all been waiting for',
-      url: 'http://www.example.com',
-      worthCount: 2,
-      notWorthCount: 1,
-      endorsements: [{
-        type: ResourceEndorsementType.Worth,
-        user: {
-          id: 'abc',
-          name: 'Greg'
-        }
-      }, {
-        type: ResourceEndorsementType.Worth,
-        user: {
-          id: 'def',
-          name: 'Not Greg'
-        }
-      }, {
-        type: ResourceEndorsementType.NotWorth,
-        user: {
-          id: 'ghi',
-          name: 'Negative Greg'
-        }
-      }]
+      url: 'http://www.example.com'
     }],
     isLoading: false
   };

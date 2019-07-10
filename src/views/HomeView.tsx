@@ -2,19 +2,15 @@ import * as React from 'react';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import AddResourceButton from '../components/add-resource/AddResourceButton';
-import ResourceListContainer from '../components/resource-list/ResourceListContainer';
+import AddResourceButtonContainer from '../containers/AddResourceButtonContainer';
+import ResourceListContainer from '../containers/ResourceListContainer';
 
 function HomeView() {
-  const onAddClick = () => {
-
-  };
-
   return (
     <Container>
       <Row className="justify-content-end">
         <Col xs="auto">
-          <AddResourceButton onClick={ onAddClick }/>
+          <AddResourceButtonContainer/>
         </Col>
       </Row>
 
