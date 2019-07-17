@@ -22,7 +22,7 @@ function AddResourceFormContainer({ addResource, history }: AddResourceFormConta
   const [saving, setSaving] = React.useState(false);
   const [error, setError] = React.useState<string>();
 
-  function onSubmit() {
+  const onSubmit = React.useCallback(() => {
     setSaving(true);
 
     addResource(addResourceModel)
@@ -31,7 +31,7 @@ function AddResourceFormContainer({ addResource, history }: AddResourceFormConta
         setSaving(false);
         setError(err);
       });
-  }
+  }, [addResource, history, addResourceModel]);
 
   return (
     <>

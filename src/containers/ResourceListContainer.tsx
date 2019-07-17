@@ -1,52 +1,50 @@
-import axios, { AxiosError } from 'axios';
 import * as React from 'react';
+import { connect } from 'react-redux';
 import ErrorAlert from '../components/ErrorAlert';
 import ResourceList from '../components/resource-list/ResourceList';
 import ResourceModel from '../models/resource.model';
+import { loadResources } from '../redux/actions/resource.actions';
+import AppState from '../redux/state/app-state';
 
-interface ResourceHookData {
-  resources: ResourceModel[];
+interface ResourceLoaderHookData {
   isLoading: boolean;
   error?: string;
 }
 
-function useResources(): ResourceHookData {
-  const [resources, setResources] = React.useState<ResourceModel[]>([]);
+function useResourceLoader(getResources: () => Promise<void>): ResourceLoaderHookData {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>();
 
   React.useEffect(() => {
     setIsLoading(true);
 
-    axios
-      .get<ResourceModel[]>('/api/resources')
-      .then(x => setResources(x.data))
-      .catch((x: AxiosError) => setError(x.message))
+    getResources()
+      .then(() => setError(undefined))
+      .catch(x => setError(x.message))
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [getResources]);
 
-  return { resources, isLoading, error };
+  return { isLoading, error };
 }
 
-function useMockResources(): ResourceHookData {
-  return {
-    resources: [{
-      id: 'first-id',
-      title: 'Why Kubernetes is the silver bullet we\'ve all been waiting for',
-      url: 'http://www.example.com'
-    }],
-    isLoading: false
-  };
+interface ResourceListContainerStateProps {
+  resources: ResourceModel[];
 }
 
-function ResourceListContainer() {
-  const { resources, isLoading, error } = useMockResources();
+interface ResourceListContainerDispatchProps {
+  loadResources: () => Promise<void>;
+}
+
+type ResourceListContainerProps = ResourceListContainerStateProps & ResourceListContainerDispatchProps;
+
+function ResourceListContainer({ resources, loadResources }: ResourceListContainerProps) {
+  const { isLoading, error } = useResourceLoader(loadResources);
 
   if (error) {
     return <ErrorAlert text={ error }/>;
   }
 
-  if (isLoading) {
+  if (isLoading && !resources.length) {
     return <p>Loading...</p>;
   }
 
@@ -61,4 +59,8 @@ function ResourceListContainer() {
   return <ResourceList resources={ resources } onResourceWorthClick={ onResourceWorthClick } onResourceNotWorthClick={ onResourceNotWorthClick }/>;
 }
 
-export default React.memo(ResourceListContainer);
+export default connect<ResourceListContainerStateProps, ResourceListContainerDispatchProps, {}, AppState>(
+  ({ resources }) => ({ resources }),
+  // @ts-ignore
+  { loadResources }
+)(React.memo(ResourceListContainer));
