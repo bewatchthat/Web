@@ -1,56 +1,62 @@
-import axios from 'axios';
-import { Action, AnyAction } from 'redux';
+import axios, { AxiosError } from 'axios';
+import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import AddResourceModel from '../../models/add-resource.model';
 import ResourceModel from '../../models/resource.model';
-import temporaryId from '../../utils/temporary-id';
+import history from '../../utils/history';
 import AppState from '../state/app-state';
 
 export const ADD_RESOURCE_REQUEST = 'ADD_RESOURCE_REQUEST';
 export const ADD_RESOURCE_SUCCESS = 'ADD_RESOURCE_SUCCESS';
+export const ADD_RESOURCE_FAILED = 'ADD_RESOURCE_FAILED';
 
-interface AddResourceAction extends Action {
-  type: typeof ADD_RESOURCE_REQUEST | typeof ADD_RESOURCE_SUCCESS;
-  resource: ResourceModel;
-}
-
-interface AddResourceRequestAction extends AddResourceAction {
+interface AddResourceRequestAction extends Action {
   type: typeof ADD_RESOURCE_REQUEST;
 }
 
-interface AddResourceSuccessAction extends AddResourceAction {
+interface AddResourceSuccessAction extends Action {
   type: typeof ADD_RESOURCE_SUCCESS;
-  temporaryId: string;
+  resource: ResourceModel;
 }
 
-export type ResourceAction = AddResourceRequestAction | AddResourceSuccessAction;
+interface AddResourceFailedAction extends Action {
+  type: typeof ADD_RESOURCE_FAILED;
+  errorMessage: string;
+}
 
-function addResourceRequest(addResourceModel: AddResourceModel): AddResourceRequestAction {
+export type ResourceAction = AddResourceRequestAction | AddResourceSuccessAction | AddResourceFailedAction;
+
+function addResourceRequest(): AddResourceRequestAction {
   return {
-    type: ADD_RESOURCE_REQUEST,
-    resource: {
-      ...addResourceModel,
-      id: temporaryId()
-    }
+    type: ADD_RESOURCE_REQUEST
   };
 }
 
-function addResourceSuccess(resource: ResourceModel, temporaryId: string): AddResourceSuccessAction {
+function addResourceSuccess(resource: ResourceModel): AddResourceSuccessAction {
   return {
     type: ADD_RESOURCE_SUCCESS,
-    resource,
-    temporaryId
+    resource
   };
 }
 
-export function addResource(addResourceModel: AddResourceModel): ThunkAction<Promise<void>, AppState, {}, AnyAction> {
+function addResourceFailed(errorMessage: string): AddResourceFailedAction {
+  return {
+    type: ADD_RESOURCE_FAILED,
+    errorMessage
+  };
+}
+
+export function addResource(addResourceModel: AddResourceModel): ThunkAction<Promise<void>, AppState, {}, ResourceAction> {
   return (dispatch) => {
-    const requestAction = addResourceRequest(addResourceModel);
-    dispatch(requestAction);
+    dispatch(addResourceRequest());
 
     return axios.post<ResourceModel>('/api/resources', addResourceModel)
       .then(x => {
-        dispatch(addResourceSuccess(x.data, requestAction.resource.id));
+        dispatch(addResourceSuccess(x.data));
+        history.push('/');
+      })
+      .catch((x: AxiosError) => {
+        dispatch(addResourceFailed(x.message));
       });
   };
 }

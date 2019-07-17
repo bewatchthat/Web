@@ -1,14 +1,19 @@
 import * as React from 'react';
-import { useState } from 'react';
+import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import TextInput from '../components/TextInput';
+import Row from 'react-bootstrap/Row';
+import AddResourceFormContainer from '../containers/AddResourceFormContainer';
 
 function AddView() {
-  const [text, setText] = useState('');
-
   return (
     <Container>
-      <TextInput text={ text } onChange={ setText }/>
+      <Row>
+        <Col md={ { span: 6, offset: 3 } }>
+          <h1 className="display-4">Add Resource</h1>
+
+          <AddResourceFormContainer/>
+        </Col>
+      </Row>
     </Container>
   );
 }

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Route, Router } from 'react-router-dom';
 import styles from './App.module.css';
 import configureStore from './redux/configure-store';
+import history from './utils/history';
 import AddView from './views/AddView';
 import HomeView from './views/HomeView';
 
@@ -12,10 +13,10 @@ function App() {
   return (
     <main className={ styles.app }>
       <Provider store={ store }>
-        <BrowserRouter>
+        <Router history={ history }>
           <Route path="/" exact component={ HomeView }/>
           <Route path="/add" component={ AddView }/>
-        </BrowserRouter>
+        </Router>
       </Provider>
     </main>
   );
