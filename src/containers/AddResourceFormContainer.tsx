@@ -1,3 +1,4 @@
+import { History } from 'history';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import AddResourceForm from '../components/add-resource/AddResourceForm';
@@ -6,23 +7,35 @@ import AddResourceModel from '../models/add-resource.model';
 import { addResource } from '../redux/actions/resource.actions';
 import AppState from '../redux/state/app-state';
 
-interface AddResourceFormContainerStateProps {
-  saving: boolean;
-  error?: string;
-}
-
 interface AddResourceFormContainerDispatchProps {
   addResource: (addResourceModel: AddResourceModel) => Promise<void>;
 }
 
-type AddResourceFormContainerProps = AddResourceFormContainerStateProps & AddResourceFormContainerDispatchProps;
+interface AddResourceFormContainerOwnProps {
+  history: History;
+}
 
-function AddResourceFormContainer({ saving, error, addResource }: AddResourceFormContainerProps) {
+type AddResourceFormContainerProps = AddResourceFormContainerDispatchProps & AddResourceFormContainerOwnProps;
+
+function AddResourceFormContainer({ addResource, history }: AddResourceFormContainerProps) {
   const [addResourceModel, setAddResourceModel] = React.useState<AddResourceModel>({ title: '', url: '' });
+  const [saving, setSaving] = React.useState(false);
+  const [error, setError] = React.useState<string>();
+
+  function onSubmit() {
+    setSaving(true);
+
+    addResource(addResourceModel)
+      .then(() => history.push('/'))
+      .catch(err => {
+        setSaving(false);
+        setError(err);
+      });
+  }
 
   return (
     <>
-      <AddResourceForm model={ addResourceModel } saving={ saving } onChange={ setAddResourceModel } onSubmit={ () => addResource(addResourceModel) }/>
+      <AddResourceForm model={ addResourceModel } saving={ saving } onChange={ setAddResourceModel } onSubmit={ onSubmit }/>
 
       {
         error ?
@@ -36,17 +49,8 @@ function AddResourceFormContainer({ saving, error, addResource }: AddResourceFor
   );
 }
 
-function mapStateToProps(state: AppState): AddResourceFormContainerStateProps {
-  return {
-    saving: state.addingResource,
-    error: state.addResourceError
-  };
-}
-
-// @ts-ignore
-const mapDispatchToProps: AddResourceFormContainerDispatchProps = { addResource };
-
-export default connect<AddResourceFormContainerStateProps, AddResourceFormContainerDispatchProps, {}, AppState>(
-  mapStateToProps,
-  mapDispatchToProps
+export default connect<{}, AddResourceFormContainerDispatchProps, AddResourceFormContainerOwnProps, AppState>(
+  null,
+  // @ts-ignore
+  { addResource }
 )(React.memo(AddResourceFormContainer));
