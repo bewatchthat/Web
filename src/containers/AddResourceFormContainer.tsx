@@ -1,37 +1,31 @@
 import { History } from 'history';
 import * as React from 'react';
-import { connect } from 'react-redux';
 import AddResourceForm from '../components/add-resource/AddResourceForm';
 import ErrorAlert from '../components/ErrorAlert';
 import AddResourceModel from '../models/add-resource.model';
 import { addResource } from '../redux/actions/resource.actions';
-import AppState from '../redux/state/app-state';
+import useAsyncDispatch from '../redux/use-async-dispatch';
 
-interface AddResourceFormContainerDispatchProps {
-  addResource: (addResourceModel: AddResourceModel) => Promise<void>;
-}
-
-interface AddResourceFormContainerOwnProps {
+interface AddResourceFormContainerProps {
   history: History;
 }
 
-type AddResourceFormContainerProps = AddResourceFormContainerDispatchProps & AddResourceFormContainerOwnProps;
-
-function AddResourceFormContainer({ addResource, history }: AddResourceFormContainerProps) {
+function AddResourceFormContainer({ history }: AddResourceFormContainerProps) {
   const [addResourceModel, setAddResourceModel] = React.useState<AddResourceModel>({ title: '', url: '' });
   const [saving, setSaving] = React.useState(false);
   const [error, setError] = React.useState<string>();
+  const dispatch = useAsyncDispatch();
 
   const onSubmit = React.useCallback(() => {
     setSaving(true);
 
-    addResource(addResourceModel)
+    dispatch(addResource(addResourceModel))
       .then(() => history.push('/'))
       .catch(err => {
         setSaving(false);
         setError(err);
       });
-  }, [addResource, history, addResourceModel]);
+  }, [dispatch, history, addResourceModel]);
 
   return (
     <>
@@ -49,8 +43,4 @@ function AddResourceFormContainer({ addResource, history }: AddResourceFormConta
   );
 }
 
-export default connect<{}, AddResourceFormContainerDispatchProps, AddResourceFormContainerOwnProps, AppState>(
-  null,
-  // @ts-ignore
-  { addResource }
-)(React.memo(AddResourceFormContainer));
+export default React.memo(AddResourceFormContainer);

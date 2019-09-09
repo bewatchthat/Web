@@ -1,50 +1,30 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import ErrorAlert from '../components/ErrorAlert';
 import ResourceList from '../components/resource-list/ResourceList';
-import ResourceModel from '../models/resource.model';
 import { loadResources } from '../redux/actions/resource.actions';
-import AppState from '../redux/state/app-state';
+import useAsyncDispatch from '../redux/use-async-dispatch';
+import useStateSelector from '../redux/use-state-selector';
 
-interface ResourceLoaderHookData {
-  isLoading: boolean;
-  error?: string;
-}
-
-function useResourceLoader(getResources: () => Promise<void>): ResourceLoaderHookData {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+function ResourceListContainer() {
+  const resources = useStateSelector(state => state.resources);
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>();
+  const dispatch = useAsyncDispatch();
 
   React.useEffect(() => {
-    setIsLoading(true);
+    setLoading(true);
 
-    getResources()
+    dispatch(loadResources())
       .then(() => setError(undefined))
       .catch(x => setError(x.message))
-      .finally(() => setIsLoading(false));
-  }, [getResources]);
-
-  return { isLoading, error };
-}
-
-interface ResourceListContainerStateProps {
-  resources: ResourceModel[];
-}
-
-interface ResourceListContainerDispatchProps {
-  loadResources: () => Promise<void>;
-}
-
-type ResourceListContainerProps = ResourceListContainerStateProps & ResourceListContainerDispatchProps;
-
-function ResourceListContainer({ resources, loadResources }: ResourceListContainerProps) {
-  const { isLoading, error } = useResourceLoader(loadResources);
+      .finally(() => setLoading(false));
+  }, [dispatch]);
 
   if (error) {
     return <ErrorAlert text={ error }/>;
   }
 
-  if (isLoading && !resources.length) {
+  if (loading && !resources.length) {
     return <p>Loading...</p>;
   }
 
@@ -59,8 +39,4 @@ function ResourceListContainer({ resources, loadResources }: ResourceListContain
   return <ResourceList resources={ resources } onResourceWorthClick={ onResourceWorthClick } onResourceNotWorthClick={ onResourceNotWorthClick }/>;
 }
 
-export default connect<ResourceListContainerStateProps, ResourceListContainerDispatchProps, {}, AppState>(
-  ({ resources }) => ({ resources }),
-  // @ts-ignore
-  { loadResources }
-)(React.memo(ResourceListContainer));
+export default React.memo(ResourceListContainer);
