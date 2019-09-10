@@ -1,3 +1,5 @@
+import { faThumbsDown } from '@fortawesome/free-solid-svg-icons/faThumbsDown';
+import { faThumbsUp } from '@fortawesome/free-solid-svg-icons/faThumbsUp';
 import * as React from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -29,8 +31,8 @@ export default function Resource({ resource, onWorthClick, onNotWorthClick }: Re
       </Row>
       <Row className="justify-content-end">
         <Col className="d-flex" xs="auto">
-          <ResourceWorthButton active={ false } count={ worthCount } icon="thumb_up" onClick={ onWorthClick }/>
-          <ResourceWorthButton className={ styles.notWorth } active={ false } count={ notWorthCount } icon="thumb_down" onClick={ onNotWorthClick }/>
+          <ResourceWorthButton active={ false } count={ worthCount } icon={ faThumbsUp } onClick={ onWorthClick }/>
+          <ResourceWorthButton className={ styles.notWorth } active={ false } count={ notWorthCount } icon={ faThumbsDown } onClick={ onNotWorthClick }/>
         </Col>
       </Row>
     </li>

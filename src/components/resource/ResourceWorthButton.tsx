@@ -1,10 +1,12 @@
+import { IconDefinition } from '@fortawesome/fontawesome-common-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
 import * as React from 'react';
 import WithClassName from '../../utils/with-class-name';
 import styles from './ResourceWorthButton.module.scss';
 
 interface ResourceWorthButtonProps {
-  icon: string;
+  icon: IconDefinition;
   count: number;
   active: boolean;
   onClick: () => void;
@@ -15,7 +17,7 @@ function ResourceWorthButton({ icon, count, active, className, onClick }: WithCl
 
   return (
     <span className={ classNames } onClick={ onClick }>
-      <i className="material-icons">{ icon }</i>
+      <FontAwesomeIcon icon={ icon }/>
       <span className={ styles.label }>{ count }</span>
     </span>
   );
