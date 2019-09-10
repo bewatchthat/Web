@@ -2,7 +2,7 @@ import * as React from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import ResourceModel from '../../models/resource.model';
-import styles from './Resource.module.css';
+import styles from './Resource.module.scss';
 import ResourceWorthButton from './ResourceWorthButton';
 
 interface ResourceProps {

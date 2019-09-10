@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ResourceModel from '../../models/resource.model';
 import Resource from '../resource/Resource';
-import styles from './ResourceList.module.css';
+import styles from './ResourceList.module.scss';
 
 interface ResourceListProps {
   resources: ResourceModel[];

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Route, Router } from 'react-router-dom';
-import styles from './App.module.css';
+import styles from './App.module.scss';
 import configureStore from './redux/configure-store';
 import history from './utils/history';
 import AddView from './views/AddView';

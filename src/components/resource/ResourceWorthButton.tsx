@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import * as React from 'react';
 import WithClassName from '../../utils/with-class-name';
-import styles from './ResourceWorthButton.module.css';
+import styles from './ResourceWorthButton.module.scss';
 
 interface ResourceWorthButtonProps {
   icon: string;
