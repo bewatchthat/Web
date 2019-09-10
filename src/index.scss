@@ -1,5 +1,7 @@
 $body-bg: #1f1f1f;
 $body-color: white;
 $link-color: white;
+$input-bg: $body-bg;
+$input-color: $body-color;
 
 @import '~bootstrap/scss/bootstrap';
