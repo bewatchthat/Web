@@ -12,7 +12,7 @@ interface ResourceListProps {
 export default function ResourceList({ resources, onResourceWorthClick, onResourceNotWorthClick }: ResourceListProps) {
   return (
     <ul className={ styles.list }>
-      { resources.map(x => <Resource key={ x.url } resource={ x } onWorthClick={ () => onResourceWorthClick(x) } onNotWorthClick={ () => onResourceNotWorthClick(x) }/>) }
+      { resources.map(x => <Resource key={ x.url } className={ styles.listItem } resource={ x } onWorthClick={ () => onResourceWorthClick(x) } onNotWorthClick={ () => onResourceNotWorthClick(x) }/>) }
     </ul>
   );
 }

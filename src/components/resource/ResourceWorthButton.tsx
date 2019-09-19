@@ -13,7 +13,7 @@ interface ResourceWorthButtonProps {
 }
 
 function ResourceWorthButton({ icon, count, active, className, onClick }: WithClassName<ResourceWorthButtonProps>) {
-  const classNames = classnames(styles.root, { [styles.active]: active }, className);
+  const classNames = classnames(styles.root, { 'text-success': active }, className);
 
   return (
     <span className={ classNames } onClick={ onClick }>

@@ -1,11 +1,9 @@
-import { faThumbsDown } from '@fortawesome/free-solid-svg-icons/faThumbsDown';
-import { faThumbsUp } from '@fortawesome/free-solid-svg-icons/faThumbsUp';
 import * as React from 'react';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
+import Card from 'react-bootstrap/Card';
 import ResourceModel from '../../models/resource.model';
-import styles from './Resource.module.scss';
-import ResourceWorthButton from './ResourceWorthButton';
+import WithClassName from '../../utils/with-class-name';
+import ResourceBody from './ResourceBody';
+import ResourceHeader from './ResourceHeader';
 
 interface ResourceProps {
   resource: ResourceModel;
@@ -13,7 +11,7 @@ interface ResourceProps {
   onNotWorthClick: () => void;
 }
 
-export default function Resource({ resource, onWorthClick, onNotWorthClick }: ResourceProps) {
+export default function Resource({ resource, onWorthClick, onNotWorthClick, className }: WithClassName<ResourceProps>) {
   const { url, title } = resource;
 
   // placeholder
@@ -21,20 +19,11 @@ export default function Resource({ resource, onWorthClick, onNotWorthClick }: Re
   const notWorthCount = 1;
 
   return (
-    <li>
-      <Row>
-        <Col>
-          <h4>
-            <a className={ styles.title } href={ url } target="_blank" rel="noopener noreferrer">{ title }</a>
-          </h4>
-        </Col>
-      </Row>
-      <Row className="justify-content-end">
-        <Col className="d-flex" xs="auto">
-          <ResourceWorthButton active={ false } count={ worthCount } icon={ faThumbsUp } onClick={ onWorthClick }/>
-          <ResourceWorthButton className={ styles.notWorth } active={ false } count={ notWorthCount } icon={ faThumbsDown } onClick={ onNotWorthClick }/>
-        </Col>
-      </Row>
+    <li className={ className }>
+      <Card>
+        <ResourceHeader url={ url } title={ title }/>
+        <ResourceBody worthCount={ worthCount } notWorthCount={ notWorthCount } onWorthClick={ onWorthClick } onNotWorthClick={ onNotWorthClick }/>
+      </Card>
     </li>
   );
 }
